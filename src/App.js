@@ -25,6 +25,8 @@ function App() {
   const handleOnSubmit = (e) => {
     e.preventDefault()
     setItems([inputs.path,...items])
+    setInputs({title: null, file: null, path: null}) //set the form values back to null so than we dont keep on uploading same things to galary
+    collapse(false) //colapses by closing the form again
   }
 
   useEffect(() => {
@@ -37,6 +39,7 @@ function App() {
         <button className="btn btn-success float-end" onClick={toggle}>{isCollapsed ? 'Close' : '+ Add'}</button>
         <div className="clearfix mb-4"></div>
         <UploadForm 
+        inputs={inputs}
           isVisible={isCollapsed}
           onChange={handleOnChange}
           onSubmit={handleOnSubmit}
