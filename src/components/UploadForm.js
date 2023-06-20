@@ -18,7 +18,8 @@ const UploadForm = ({ isVisible, onChange, onSubmit }) => {
             />
           </div>
           <div className="mb-3">
-            <input type="file" className="form-control" name="file" />
+            <input type="file" className="form-control" name="file" onChange={onChange} />
+            {/* onChange={onChange} is needed to get user information important */}
           </div>
           <button
             type="submit"
