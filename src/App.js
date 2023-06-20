@@ -14,9 +14,20 @@ const photos = [
 ]
 
 function App() {
+  const [input, setInput] = useState()
   const [items, setItems] = useState(photos);
   const [isCollapsed, collapse] = useState(false);
   const toggle = () => collapse(!isCollapsed);
+  const handleOnChange = (e) => setInput(e.target.value)
+  // the above line takes all the input user enters 
+  const handleOnSubmit = (e) => {
+    e.preventDefault()
+    // e=>event  "e.preventDefault()" prevents the page to refresh after the value or image from the user side as has been
+    // updated. kyunki iska forms ka default funstion hota hai page ko refresh krne wala!!!
+    setItems([input,...items])
+  }
+  //input given by user auto updates in our already available list / array of items
+
 
   return (
     <>
@@ -25,7 +36,9 @@ function App() {
         <button className="btn btn-success float-end" onClick={toggle}>{isCollapsed ? 'Close' : '+ Add'}</button>
         
         <div className="clearfix mb-4"></div>
-        <UploadForm isVisible={isCollapsed}/>
+        <UploadForm isVisible={isCollapsed}
+        onChange={handleOnChange}
+        onSubmit={handleOnSubmit}/>
         <h1>Gallery</h1>
         <div className="row">
           {items.map((photo, index) => <Card key={index} src={photo}/>)}
