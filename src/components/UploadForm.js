@@ -19,7 +19,7 @@ const UploadForm = ({ inputs ,isVisible, onChange, onSubmit }) => {
 const isDisabled = useMemo(()=>{
  return !!Object.values(inputs).some(input =>!input)
 },[inputs])
-// useMemo is used to validate data so the function works only if there is a change in data as upto now it reloaded
+// useMemo is used to validate data so the function works 
 // autouploaded the data despite of the form values being missing. the logic written inside checks if any value is missing
 return (
       isVisible && <>

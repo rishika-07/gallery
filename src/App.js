@@ -1,14 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import {Navbar} from "./components/navbar";
 import {Card} from "./components/card";
 import UploadForm from "./components/UploadForm";
 import "./App.css";
 
-const photos = [
-  'https://picsum.photos/id/1001/200/200'
-]
+const photos = []
+const initialState = {
+  items: photos, 
+  count: photos.length, 
+  inputs: { title: null, file: null, path: null}, 
+  isCollapsed: false
+}
 
+function reducer(state, action) {
+switch(action.type  ) {
+    case 'setItem':
+      return {
+        ...state, 
+        items: [action.payload.path, ...state.items]
+      }
+    default : return state
+}
+}
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState)
   const [count, setCount] = useState()
   const [inputs, setInputs] = useState({ title: null, file: null, path: null});
   const [items, setItems] = useState(photos);
@@ -24,10 +39,14 @@ function App() {
   }
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    setItems([inputs.path,...items])
+    // setItems([inputs.path,...items])
+    dispatch({ type: 'setItem', payload: { path : inputs}})
     setInputs({title: null, file: null, path: null}) //set the form values back to null so than we dont keep on uploading same things to galary
     collapse(false) //colapses by closing the form again
   }
+
+  useEffect(() => {
+  }, [state.items]) 
 
   useEffect(() => {
     setCount(`you have ${items.length} image${items.length > 1 ? 's': ''}`)
@@ -48,7 +67,7 @@ function App() {
         <h1>Gallery</h1>
 
         <div className="row">
-        {items.map((photo, index) => <Card key={index} src={photo}/>)}
+        {state.items.map((photo, index) => <Card key={index} src={photo.path}/>)}
         </div>
       </div>
     </>
